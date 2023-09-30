@@ -1,0 +1,1354 @@
+openapi: 3.0.3
+info:
+  title: Book GiveAway API
+  version: 0.0.0
+paths:
+  /api/schema/:
+    get:
+      operationId: api_schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /author/{id}/:
+    get:
+      operationId: author_retrieve
+      description: |-
+        API endpoint to retrieve, update, or delete an author.
+
+        **Permissions**:
+        - Only the owner or an admin can update or delete the author.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - author
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+          description: ''
+    put:
+      operationId: author_update
+      description: |-
+        API endpoint to retrieve, update, or delete an author.
+
+        **Permissions**:
+        - Only the owner or an admin can update or delete the author.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - author
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Author'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+          description: ''
+    patch:
+      operationId: author_partial_update
+      description: |-
+        API endpoint to retrieve, update, or delete an author.
+
+        **Permissions**:
+        - Only the owner or an admin can update or delete the author.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - author
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthor'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+          description: ''
+    delete:
+      operationId: author_destroy
+      description: |-
+        API endpoint to retrieve, update, or delete an author.
+
+        **Permissions**:
+        - Only the owner or an admin can update or delete the author.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - author
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /authors/:
+    get:
+      operationId: authors_list
+      description: |-
+        API endpoint to list all authors or create a new author.
+
+        **Permissions**:
+        - Authenticated users can create a new author.
+        - Everyone can view the list of authors.
+      tags:
+      - authors
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+          description: ''
+    post:
+      operationId: authors_create
+      description: |-
+        API endpoint to list all authors or create a new author.
+
+        **Permissions**:
+        - Authenticated users can create a new author.
+        - Everyone can view the list of authors.
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Author'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+          description: ''
+  /book/{id}/:
+    get:
+      operationId: book_retrieve
+      description: |-
+        API endpoint to retrieve, update, or delete a book by its ID.
+
+        **Permissions**:
+        - Read: Everyone
+        - Update/Delete: Owner of the book or an Admin
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - book
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+          description: ''
+    put:
+      operationId: book_update
+      description: |-
+        API endpoint to retrieve, update, or delete a book by its ID.
+
+        **Permissions**:
+        - Read: Everyone
+        - Update/Delete: Owner of the book or an Admin
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Book'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Book'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+          description: ''
+    patch:
+      operationId: book_partial_update
+      description: |-
+        API endpoint to retrieve, update, or delete a book by its ID.
+
+        **Permissions**:
+        - Read: Everyone
+        - Update/Delete: Owner of the book or an Admin
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBook'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBook'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBook'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+          description: ''
+    delete:
+      operationId: book_destroy
+      description: |-
+        API endpoint to retrieve, update, or delete a book by its ID.
+
+        **Permissions**:
+        - Read: Everyone
+        - Update/Delete: Owner of the book or an Admin
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - book
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /book/{id}/detailview:
+    get:
+      operationId: book_detailview_retrieve
+      description: |-
+        API endpoint to retrieve a book by its ID.
+
+        **Permissions**:
+        - Read: Everyone
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - book
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+          description: ''
+  /book/available-books/:
+    get:
+      operationId: book_available_books_list
+      description: |-
+        API endpoint to list all available books.
+
+        **Permissions**:
+        - Read: Everyone
+      tags:
+      - book
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+          description: ''
+  /books/:
+    get:
+      operationId: books_list
+      description: |-
+        API endpoint to list all books or create a new book. Allows filtering by title, genre, and author name
+
+        **Permissions**:
+        - Read: Everyone
+        - Create: Authenticated users
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - books
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+          description: ''
+    post:
+      operationId: books_create
+      description: |-
+        API endpoint to list all books or create a new book. Allows filtering by title, genre, and author name
+
+        **Permissions**:
+        - Read: Everyone
+        - Create: Authenticated users
+      tags:
+      - books
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Book'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Book'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+          description: ''
+  /books-requests/:
+    get:
+      operationId: books_requests_list
+      description: |-
+        API endpoint to list all book requests made to the authenticated user (book owner).
+
+        **Permissions**:
+        - Only authenticated users can view the requests made to them.
+      tags:
+      - books-requests
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListBookRequest'
+          description: ''
+  /confirm-request/{id}:
+    put:
+      operationId: confirm_request_update
+      description: |-
+        API endpoint to confirm a book request.
+
+        **Permissions**:
+        - Only authenticated users can confirm a request.
+
+        **Conditions**:
+        - The user must be the owner of the book and the book must be available.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - confirm-request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AskForBookRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AskForBookRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AskForBookRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AskForBookRequest'
+          description: ''
+    patch:
+      operationId: confirm_request_partial_update
+      description: |-
+        API endpoint to confirm a book request.
+
+        **Permissions**:
+        - Only authenticated users can confirm a request.
+
+        **Conditions**:
+        - The user must be the owner of the book and the book must be available.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - confirm-request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAskForBookRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAskForBookRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAskForBookRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AskForBookRequest'
+          description: ''
+  /create-condition/:
+    get:
+      operationId: create_condition_list
+      description: |-
+        API endpoint to create a new condition.
+
+        **Permissions**:
+        - Super users can create a new condition.
+      tags:
+      - create-condition
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Condition'
+          description: ''
+    post:
+      operationId: create_condition_create
+      description: |-
+        API endpoint to create a new condition.
+
+        **Permissions**:
+        - Super users can create a new condition.
+      tags:
+      - create-condition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Condition'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Condition'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Condition'
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Condition'
+          description: ''
+  /decline-request/{id}:
+    put:
+      operationId: decline_request_update
+      description: |-
+        API endpoint to decline a book request.
+
+        **Permissions**:
+        - Only authenticated users can decline a request.
+
+        **Conditions**:
+        - The user must be the owner of the book.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - decline-request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AskForBookRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AskForBookRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AskForBookRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AskForBookRequest'
+          description: ''
+    patch:
+      operationId: decline_request_partial_update
+      description: |-
+        API endpoint to decline a book request.
+
+        **Permissions**:
+        - Only authenticated users can decline a request.
+
+        **Conditions**:
+        - The user must be the owner of the book.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - decline-request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAskForBookRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAskForBookRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAskForBookRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AskForBookRequest'
+          description: ''
+  /delete-user/{user_id}/:
+    delete:
+      operationId: delete_user_destroy
+      description: |-
+        API endpoint to delete a user.
+
+        Allows a user to delete their own account or lets a superuser delete any user account.
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: integer
+        required: true
+      - in: query
+        name: user_id
+        schema:
+          type: integer
+        description: ID of the user to be deleted
+        required: true
+      tags:
+      - delete-user
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUser'
+          description: ''
+  /genres/:
+    get:
+      operationId: genres_list
+      description: |-
+        API endpoint to list all genres or create a new genre.
+
+        **Permissions**:
+        - Authenticated users can create a new genre.
+        - Everyone can view the list of genres.
+      tags:
+      - genres
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Genre'
+          description: ''
+    post:
+      operationId: genres_create
+      description: |-
+        API endpoint to list all genres or create a new genre.
+
+        **Permissions**:
+        - Authenticated users can create a new genre.
+        - Everyone can view the list of genres.
+      tags:
+      - genres
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genre'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Genre'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Genre'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genre'
+          description: ''
+  /genres/{id}/:
+    get:
+      operationId: genres_retrieve
+      description: |-
+        API endpoint to retrieve, update, or delete a genre.
+
+        **Permissions**:
+        - Only the owner or an admin can update or delete the genre.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - genres
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genre'
+          description: ''
+    put:
+      operationId: genres_update
+      description: |-
+        API endpoint to retrieve, update, or delete a genre.
+
+        **Permissions**:
+        - Only the owner or an admin can update or delete the genre.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - genres
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Genre'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Genre'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Genre'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genre'
+          description: ''
+    patch:
+      operationId: genres_partial_update
+      description: |-
+        API endpoint to retrieve, update, or delete a genre.
+
+        **Permissions**:
+        - Only the owner or an admin can update or delete the genre.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - genres
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGenre'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGenre'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGenre'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genre'
+          description: ''
+    delete:
+      operationId: genres_destroy
+      description: |-
+        API endpoint to retrieve, update, or delete a genre.
+
+        **Permissions**:
+        - Only the owner or an admin can update or delete the genre.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - genres
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /login/:
+    post:
+      operationId: login_create
+      description: |-
+        API endpoint for user login.
+
+        Authenticates the user using email and password and returns an access token.
+      tags:
+      - login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /logout/:
+    post:
+      operationId: logout_create
+      tags:
+      - logout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeleteUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeleteUser'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /register/:
+    post:
+      operationId: register_create
+      description: API endpoint that allows new users to register.
+      tags:
+      - register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+  /request-book/:
+    post:
+      operationId: request_book_create
+      description: |-
+        API endpoint to request a book.
+
+        **Permissions**:
+        - Only authenticated users can make a request.
+      tags:
+      - request-book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AskForBookRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AskForBookRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AskForBookRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AskForBookRequest'
+          description: ''
+  /sent-requests/:
+    get:
+      operationId: sent_requests_list
+      description: |-
+        API endpoint to list all book requests sent by the authenticated user.
+
+        **Permissions**:
+        - Only authenticated users can view the requests they've sent.
+      tags:
+      - sent-requests
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListBookRequest'
+          description: ''
+components:
+  schemas:
+    AskForBookRequest:
+      type: object
+      properties:
+        book:
+          type: integer
+        owner:
+          type: string
+          readOnly: true
+        location:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+      required:
+      - book
+      - location
+      - owner
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - id
+      - name
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        owner:
+          type: integer
+          readOnly: true
+        location:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        is_available:
+          type: boolean
+        image:
+          type: string
+          format: uri
+          nullable: true
+        condition:
+          type: integer
+        author:
+          type: array
+          items:
+            type: integer
+        genre:
+          type: array
+          items:
+            type: integer
+      required:
+      - author
+      - condition
+      - description
+      - genre
+      - id
+      - location
+      - owner
+      - title
+    Condition:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        condition:
+          $ref: '#/components/schemas/ConditionEnum'
+      required:
+      - id
+    ConditionEnum:
+      enum:
+      - New
+      - Used
+      type: string
+      description: |-
+        * `New` - NEW
+        * `Used` - USED
+    DeleteUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+      required:
+      - user_id
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+      required:
+      - id
+      - name
+    ListBookRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        request_date:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        requester:
+          type: integer
+        book:
+          type: integer
+      required:
+      - book
+      - id
+      - request_date
+      - requester
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+      - email
+      - password
+    PatchedAskForBookRequest:
+      type: object
+      properties:
+        book:
+          type: integer
+        owner:
+          type: string
+          readOnly: true
+        location:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+    PatchedAuthor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+    PatchedBook:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        owner:
+          type: integer
+          readOnly: true
+        location:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        is_available:
+          type: boolean
+        image:
+          type: string
+          format: uri
+          nullable: true
+        condition:
+          type: integer
+        author:
+          type: array
+          items:
+            type: integer
+        genre:
+          type: array
+          items:
+            type: integer
+    PatchedGenre:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+    Register:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        location:
+          type: string
+          maxLength: 255
+      required:
+      - email
+      - location
+      - password
+    StatusEnum:
+      enum:
+      - Pending
+      - Accepted
+      - Declined
+      type: string
+      description: |-
+        * `Pending` - PENDING
+        * `Accepted` - ACCEPTED
+        * `Declined` - DECLINED
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
