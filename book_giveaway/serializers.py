@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from book_giveaway.models import AskForBookRequest
@@ -19,9 +20,11 @@ class AskForBookRequestSerializer(serializers.ModelSerializer):
             )
         ]
 
+    @extend_schema_field(serializers.CharField())
     def get_location(self, obj):
         return obj.book.location
 
+    @extend_schema_field(serializers.CharField())
     def get_owner(self, obj):
         return obj.book.owner
 

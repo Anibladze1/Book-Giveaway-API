@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('book_giveaway.urls')),
     path('', include('book_supporting_resources.urls')),
 
-    path('book/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 
 ]
