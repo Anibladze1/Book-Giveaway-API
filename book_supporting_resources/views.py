@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .models import Author, Genre, Condition
 from book.permisions import IsOwnerOrAdmin
 from .serializers import AuthorSerializer, GenreSerializer, ConditionSerializer
-
+from .permisions import IsAdminOrReadOnly
 
 # Author Views
 class AuthorsListCreateView(generics.ListCreateAPIView):
@@ -27,7 +27,6 @@ class AuthorRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     **Permissions**:
     - Only the owner or an admin can update or delete the author.
-    - Everyone can retrieve the author details.
     """
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
@@ -54,7 +53,6 @@ class GenresRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     **Permissions**:
     - Only the owner or an admin can update or delete the genre.
-    - Everyone can retrieve the genre details.
     """
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
@@ -62,14 +60,13 @@ class GenresRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
 
 # Condition Views
-class ConditionCreateView(generics.CreateAPIView):
+class ConditionCreateView(generics.ListCreateAPIView):
     """
     API endpoint to create a new condition.
 
     **Permissions**:
-    - Authenticated users can create a new condition.
-    - Unauthenticated users cannot create a condition.
+    - Super users can create a new condition.
     """
     queryset = Condition.objects.all()
     serializer_class = ConditionSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]

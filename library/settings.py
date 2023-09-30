@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-l#+rc4ewq61a%g*+(h%3+)h-@8fgly0bgck%qq4-2gescoufn0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
 
 # Application definition
 
@@ -57,9 +57,7 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Book Management System',
-    'VERSION': '0.1',
-    'DESCRIPTION': 'Book Management System API, for renting Books',
+    'TITLE': 'Book GiveAway API',
 }
 
 SIMPLE_JWT = {
@@ -119,12 +117,25 @@ WSGI_APPLICATION = "library.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# Comment This if You are using SQLite Instead of PostgresSQL
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("POSTGRES_DB"),
+        'USER': os.getenv("POSTGRES_USER"),
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
+        'HOST': 'postgres',
+        'PORT': '5432'
     }
 }
+
+# Uncomment This if You are using SQLite Instead of PostgresSQL
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
